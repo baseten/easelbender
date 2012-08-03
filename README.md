@@ -30,7 +30,7 @@ WebGL canvas context
 - The existing EaselJS (cached) canvas context is cleared and drawImage is used
 to fill it with the rendered WebGL canvas
 
-### Example ### 
+### Example ###
 
 See the example folder for more info, but basically like this:
 
@@ -76,7 +76,7 @@ function tick() {
 </script>
 ```
 
-### Known Issues ### 
+### Known Issues ###
 
 - Resizing currently doesn't work correctly due to the different ways it is handled
 by Three.js and EaselJS and I haven't spent the time trying to figure it out
