@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Easelbender Logo Loader</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+	<canvas id="logo" data-image="images/logo-loader.jpg" width="506" height="464"></canvas>
+	
+	<script id="fragmentShader" type="x-shader/x-fragment">
+		uniform sampler2D tInput;
+		uniform int tWidth;
+		uniform int tHeight;
+		uniform float fDimension;
+
+		varying vec2 vUv;
+
+		void main() {
+			vec2 uv = vUv;
+			
+			float fWidth = float(tWidth);
+			float fHeight = float(tHeight);			
+			float halfDimension = fDimension * 0.5;
+			
+			float remX = mod(fWidth, fDimension);
+			float halfRemX = remX * 0.5;
+			float offX = mod(floor(fWidth / fDimension), 2.0) == 0.0 ? halfRemX - halfDimension : halfRemX;
+			
+			float remY = mod(fHeight, fDimension);
+			float halfRemY = remY * 0.5;
+			float offY = mod(floor(fHeight / fDimension), 2.0) == 0.0 ? halfRemY - halfDimension : halfRemY;
+			
+			float srcX = gl_FragCoord.x - offX;
+			float srcY = gl_FragCoord.y - offY;
+			
+			srcX = floor(srcX / fDimension) * fDimension + halfDimension;
+			srcY = floor(srcY / fDimension) * fDimension + halfDimension;
+			
+			srcX = clamp(srcX, 0.0, fWidth);
+			srcY = clamp(srcY, 0.0, fHeight);
+			
+			uv.x = srcX / fWidth;
+			uv.y = 1.0 - (srcY / fHeight);
+			
+			gl_FragColor = texture2D(tInput, uv);
+		}
+	</script>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://code.createjs.com/easeljs-0.4.2.min.js"></script>
+	<script type="text/javascript" src="js/GLSLFilter.js"></script>
+	<script type="text/javascript" src="js/three/Three.js"></script>
+	<script type="text/javascript" src="js/three/postprocessing/ShaderPass.js"></script>
+	<script type="text/javascript" src="js/three/postprocessing/MaskPass.js"></script>
+	<script type="text/javascript" src="js/three/postprocessing/EffectComposer.js"></script>
+	<script type="text/javascript" src="js/three/ShaderExtras.js"></script>
+	<script type="text/javascript" src="js/tweenlite/EasePack.min.js"></script>
+	<script type="text/javascript" src="js/tweenlite/TweenLite.min.js"></script>
+	<script type="text/javascript" src="js/LogoLoader.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

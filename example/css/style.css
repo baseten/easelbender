@@ -1,0 +1,19 @@
+html {
+	overflow:hidden;
+}
+
+body {
+	overflow:hidden;
+	background:#f7931e;
+}
+
+canvas#logo {
+	background:#f7931e;
+}
+
+#webgl {
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:10;
+}
