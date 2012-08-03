@@ -9,8 +9,8 @@ spark off some things ;)
 I recently tried to recreate an animation coded in AS3 with the HTML5 Canvas API,
 specifically using the EaselJS framework. The framework is great, but I couldn't
 get an effect to render at anywhere near a decent framerate (A Canvas limitation
-not EaselJS's). This effect was originally written in PixelBender and since
-PixelBender was massively inspired by GLSL in the first place I wondered if I
+not EaselJS's). This effect was originally written in PixelBender, and since
+PixelBender was massively inspired by GLSL in the first place, I wondered if I
 could create a reusable filter for EaselJS that leveraged GLSL via WebGL (and
 Three.js). So after a day's tinkering here is EaselBender.
 
