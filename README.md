@@ -69,7 +69,7 @@ stage.cache(0, 0, width, height);
 // can easily be Tweened if desired
 // stage.updateCache() is necessary for EaselJS to show the new canvas as is stage.tick()
 function tick() {
-	filter.shader.uniforms.fDimension++
+	filter.shader.uniforms.fDimension.value++
 	stage.updateCache();
 	stage.tick();
 }
