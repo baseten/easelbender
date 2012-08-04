@@ -78,8 +78,10 @@ function tick() {
 
 ### Known Issues ###
 
-- Resizing currently doesn't work correctly due to the different ways it is handled
-by Three.js and EaselJS and I haven't spent the time trying to figure it out
+- <s>Current implementation won't work with animating canvases! Obviously this
+massively effects the usefulness of the filter... Will fix ASAP!</s>
+- <s>Resizing currently doesn't work correctly due to the different ways it is handled
+by Three.js and EaselJS and I haven't spent the time trying to figure it out</s>
 - In GLSLFilter's applyFilter method I'm having to reset the transform on EaselJS's
 canvas context using targetCtx.setTransform(1, 0, 0, 1, 0, 0), otherwise the drawImage
 call puts the WebGL output in completely the wrong place. I'm not sure why this
