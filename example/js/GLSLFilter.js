@@ -69,13 +69,14 @@ GLSLFilter.prototype.getBounds = function () {
  * @param targetX Optional. The x position to draw the result to. Defaults to the value passed to x.
  * @param targetY Optional. The y position to draw the result to. Defaults to the value passed to y.
  **/
-GLSLFilter.prototype.applyFilter = function(ctx, x, y, width, height, targetCtx, targetX, targetY) {
+GLSLFilter.prototype.applyFilter = function(ctx, x, y, width, height, targetCtx, targetX, targetY) {	
 	targetCtx = targetCtx || ctx;
 	
 	if(targetX == null) { targetX = x; }
 	if(targetY == null) { targetY = y; }
 	
 	this.texture.image = ctx.canvas;
+	this.texture.needsUpdate = true;
 			
 	this.effectComposer.renderTarget1.width = width;
 	this.effectComposer.renderTarget1.height = height;
@@ -85,7 +86,7 @@ GLSLFilter.prototype.applyFilter = function(ctx, x, y, width, height, targetCtx,
 	// not sure where it's been changed in the first place though!?
 	targetCtx.setTransform(1, 0, 0, 1, 0, 0);
 	targetCtx.clearRect(0, 0, width, height);
-	targetCtx.drawImage(this.renderer.domElement, 0, 0);
+	targetCtx.drawImage(this.renderer.domElement, targetX, targetY);
 }
 
 GLSLFilter.prototype.clone = function () {

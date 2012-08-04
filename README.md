@@ -1,9 +1,6 @@
 EaselBender
 ===========
 
-Update: There's a pretty major flaw with the current filter: It's not working
-with animated canvases! Oops. I'll post a fix ASAP. 
-
 Brings PixelBender style filters to EaselJS, with the help of GLSL and Three.js
 
 This is more of a proof of concept than anything else. But perhaps it might
@@ -81,8 +78,6 @@ function tick() {
 
 ### Known Issues ###
 
-- Current implementation won't work with animating canvases! Obviously this
-massively effects the usefulness of the filter... Will fix ASAP!
 - Resizing currently doesn't work correctly due to the different ways it is handled
 by Three.js and EaselJS and I haven't spent the time trying to figure it out
 - In GLSLFilter's applyFilter method I'm having to reset the transform on EaselJS's
