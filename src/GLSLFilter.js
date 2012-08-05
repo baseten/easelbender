@@ -101,7 +101,7 @@ GLSLFilter.prototype.applyFilter = function(ctx, x, y, width, height, targetCtx,
 	this.effectComposer.renderTarget1.width = width;
 	this.effectComposer.renderTarget1.height = height;
 	this.effectComposer.render();
-		
+			
 	// seem to need to reset the transform, otherwise drawImage occurs in completely the wrong place
 	// not sure where it's been changed in the first place though!?
 	targetCtx.setTransform(1, 0, 0, 1, 0, 0);
@@ -118,4 +118,5 @@ GLSLFilter.prototype.toString = function () {
 }
 
 GLSLFilter.renderer = new THREE.WebGLRenderer();
+GLSLFilter.renderer.setSize(window.innerWidth, window.innerHeight);
 GLSLFilter.hasWebGL = GLSLFilter.renderer ? true : false;
