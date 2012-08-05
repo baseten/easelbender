@@ -1,7 +1,8 @@
 // author Alex Prokop
 // www.baseten.co.uk
 
-var $canvas, $window, $img, imageWidth, imageHeight, loaderAnimHeight, bitmap, stage, width, height, stats, loaderFilter, loaderPosition, pixelFilter;
+var $canvas, $window, $img, imageWidth, imageHeight, loaderAnimHeight, bitmap, stage, width, height, loaderFilter, loaderPosition, pixelFilter;
+//var stats;
 
 function main() {
 	$canvas = $('#logo');
@@ -9,9 +10,9 @@ function main() {
 	
 	//$('body').append($(GLSLFilter.renderer.domElement).attr('id', 'webgl'));
 	
-	stats = new Stats();
-	$(stats.domElement).attr('id', 'stats');
-	$('body').append(stats.domElement)
+	//stats = new Stats();
+	//$(stats.domElement).attr('id', 'stats');
+	//$('body').append(stats.domElement);
 	
 	$img = $('<img />').bind('load', onImageLoaded).attr('src', $canvas.attr('data-image'));
 }
@@ -71,7 +72,7 @@ function updateLoaderAnimation() {
 	// updateCache seems to break positioning?
 	stage.cache(bitmap.x, bitmap.y, imageWidth, loaderAnimHeight);
 	stage.tick();
-	stats.update();
+	//stats.update();
 }
 
 function onLoaderAnimationComplete() {
@@ -112,7 +113,7 @@ function setupPixelFilter() {
 function updatePixelAnimation() {
 	stage.updateCache();
 	stage.tick();
-	stats.update();
+	//stats.update();
 }
 
 function onPixelAnimationComplete() {	
