@@ -121,6 +121,7 @@ function onPixelAnimationComplete() {
 	stage.removeChild(bitmap);	
 	stage.filters = [];
 	stage.updateCache();
+	stage.update();
 }
 
 function onResize() {
