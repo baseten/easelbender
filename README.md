@@ -84,6 +84,16 @@ call puts the WebGL output in completely the wrong place. I'm not sure why this
 is as I'm not setting the transform anywhere myself. Doing this seems OK, but I'm
 not sure if it will interfere with anything should these transforms be explicitly
 set
+- Despite being hardware accelerated the speed of the filter suffers from having
+to copy (using drawImage) the content of the WebGL canvas back into the 2D EaselJS
+canvas. A potential solution would be to add the WebGL canvas directly to the page
+(this gives a substantial performance boost), but then it kinda stops it being a
+plugin!
+- Careful caching will benefit performance. By only caching the region the fragment
+shader will effect, the size of the input texture and the number of fragments needing
+processing is reduced. There seems to be a bug with EaselJS DisplayObject's
+updateCache method where using cache regions breaks positioning. Using the cache
+method again with the same dimensions should work. See http://community.createjs.com/discussions/easeljs/240-updatecache-bug-on-cache-region-set-on-stage
 
 ### Change log ###
 
@@ -95,6 +105,7 @@ r2 05/08/2012
 - Moved texture input width and height uniforms into GLSLFilter
 - Resizing now handled internally by GLSLFilter
 - Example updated to reflect changes
+- Oldskool image loading animation rewritten as GLSLFilter (but now slower!)
 
 r1 03/08/2012
 
