@@ -37,10 +37,9 @@ See the example folder for more info, but basically like this:
 ```html
 <script>
 // uniforms are provided in standard Three.js format
-// no need to supply a uniform for the texture input, this is done by the filter
+// no need to supply a uniform for the texture input or it's width and height
+// this is done internally by GLSLFilter
 var uniforms = {
-	'tWidth': {'type': 'i', 'value': width},
-	'tHeight': {'type': 'i', 'value': height},
 	'fDimension': {'type': 'f', 'value': 1.0}
 };
 
@@ -55,10 +54,7 @@ var params = {
 	'stencilBuffer': false
 };
 
-// a Three.js WebGL Renderer needs to be passed through to the filter
-var renderer = new THREE.WebGLRenderer();
-
-var filter = new GLSLFilter(renderer, uniforms, fragmentShader, params);
+var filter = new GLSLFilter(uniforms, fragmentShader, params);
 
 // where stage is an EaselJS Stage instance and width and height are it's dimensions
 // a cache is required by EaselJS for filters to appear
@@ -88,3 +84,18 @@ call puts the WebGL output in completely the wrong place. I'm not sure why this
 is as I'm not setting the transform anywhere myself. Doing this seems OK, but I'm
 not sure if it will interfere with anything should these transforms be explicitly
 set
+
+### Change log ###
+
+r2 05/08/2012
+
+- Moved Three.js Renderer to static property of GLSLFilter
+- Added GLSLFilter.hasWebGL static property to allow testing for availability
+- If WebGL is not available filter will gracefully degrade and do nothing
+- Moved texture input width and height uniforms into GLSLFilter
+- Resizing now handled internally by GLSLFilter
+- Example updated to reflect changes
+
+r1 03/08/2012
+
+- Initial release
