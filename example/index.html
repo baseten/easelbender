@@ -10,8 +10,9 @@
 	
 	<script id="fragmentShader" type="x-shader/x-fragment">
 		uniform sampler2D tInput;
-		uniform int tWidth;
-		uniform int tHeight;
+		uniform int iInputWidth;
+		uniform int iInputHeight;
+		
 		uniform float fDimension;
 
 		varying vec2 vUv;
@@ -19,8 +20,8 @@
 		void main() {
 			vec2 uv = vUv;
 			
-			float fWidth = float(tWidth);
-			float fHeight = float(tHeight);			
+			float fWidth = float(iInputWidth);
+			float fHeight = float(iInputHeight);			
 			float halfDimension = fDimension * 0.5;
 			
 			float remX = mod(fWidth, fDimension);
@@ -49,7 +50,6 @@
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://code.createjs.com/easeljs-0.4.2.min.js"></script>
-	<script type="text/javascript" src="js/GLSLFilter.js"></script>
 	<script type="text/javascript" src="js/three/Three.js"></script>
 	<script type="text/javascript" src="js/three/postprocessing/ShaderPass.js"></script>
 	<script type="text/javascript" src="js/three/postprocessing/MaskPass.js"></script>
@@ -57,6 +57,7 @@
 	<script type="text/javascript" src="js/three/ShaderExtras.js"></script>
 	<script type="text/javascript" src="js/tweenlite/EasePack.min.js"></script>
 	<script type="text/javascript" src="js/tweenlite/TweenLite.min.js"></script>
+	<script type="text/javascript" src="../src/GLSLFilter.js"></script>
 	<script type="text/javascript" src="js/LogoLoader.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 </body>

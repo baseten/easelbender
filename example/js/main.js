@@ -6,10 +6,6 @@ var $canvas, $window, logo, stage, stats, width, height, pixelFilter, renderer;
 function main() {
 	$canvas = $('#logo');
 	$window = $(window);
-	
-	renderer = new THREE.WebGLRenderer();
-	//$(renderer.domElement).attr('id', 'webgl');
-	//$('body').append(renderer.domElement);
 		
 	logo = new LogoLoader();
 	
@@ -44,12 +40,8 @@ function onLogoLoaded() {
 function onResize() {
 	width = $window.width();
 	height = $window.height();
-		
-	renderer.setSize(width, height);
-	
+			
 	if(pixelFilter) {
-		pixelFilter.shader.uniforms.tWidth.value = width;
-		pixelFilter.shader.uniforms.tHeight.value = height;
 		stage.cache(0, 0, width, height);
 	}
 		
@@ -70,8 +62,6 @@ function onAnimationComplete() {
 	// setup filter
 	
 	var uniforms = {
-		'tWidth': {'type': 'i', 'value': width},
-		'tHeight': {'type': 'i', 'value': height},
 		'fDimension': {'type': 'f', 'value': 1.0}
 	};
 	
@@ -84,7 +74,7 @@ function onAnimationComplete() {
 		'stencilBuffer': false
 	};
 	
-	pixelFilter = new GLSLFilter(renderer, uniforms, fragmentShader, params);
+	pixelFilter = new GLSLFilter(uniforms, fragmentShader, params);
 	
 	stage.filters = [pixelFilter];
 	stage.cache(0, 0, width, height);
@@ -94,7 +84,9 @@ function onAnimationComplete() {
 	Ticker.removeListener(updateLoad);
 	Ticker.addListener(updatePixel);
 	
-	TweenLite.to(pixelFilter.shader.uniforms.fDimension, 2.5, {value:target, delay:0.5, ease:Quint.easeIn, onComplete:onPixellationComplete});
+	if(GLSLFilter.hasWebGL) {
+		TweenLite.to(pixelFilter.shader.uniforms.fDimension, 2.5, {value:target, delay:0.5, ease:Quint.easeIn, onComplete:onPixellationComplete});
+	}
 }
 
 function updateLoad() {
@@ -109,6 +101,12 @@ function updatePixel() {
 
 function onPixellationComplete() {	
 	Ticker.removeListener(updatePixel);
+	
+	stage.removeChild(logo.background);
+	logo.background = null;
+	
+	stage.filters = [];
+	stage.updateCache();
 }
 
 $(document).ready(main);

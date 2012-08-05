@@ -1,12 +1,14 @@
 // author - Alex Prokop
 // www.baseten.co.uk
-var GLSLFilter = function (renderer, uniforms, fragmentShader, params) {
-	
-	this.renderer = renderer;
-	
+var GLSLFilter = function (uniforms, fragmentShader, params) {
+		
 	this.uniforms = uniforms;
 	this.fragmentShader = fragmentShader;
 	this.params = params;
+	
+	if(!GLSLFilter.hasWebGL) {
+		return;
+	}
 	
 	this.texture = new THREE.Texture();
 	this.texture.generateMipmaps = false;
@@ -34,11 +36,16 @@ var GLSLFilter = function (renderer, uniforms, fragmentShader, params) {
 		'fragmentShader': fragmentShader
 	};
 	
+	var width = GLSLFilter.renderer.domElement.width;
+	var height = GLSLFilter.renderer.domElement.height;
+	
 	this.shader = new THREE.ShaderPass(shader, 'tInput');
-	this.shader.uniforms.tInput = {type: 't', value: 0, texture: null};
+	this.shader.uniforms.tInput = {'type':'t', 'value':0, 'texture':null};
+	this.shader.uniforms.iInputWidth = {'type':'i', 'value':width};
+	this.shader.uniforms.iInputHeight = {'type':'i', 'value':height};
 	this.shader.renderToScreen = true;
 			
-	this.effectComposer = new THREE.EffectComposer(renderer, new THREE.WebGLRenderTarget(renderer.domElement.width, renderer.domElement.height, params));
+	this.effectComposer = new THREE.EffectComposer(GLSLFilter.renderer, new THREE.WebGLRenderTarget(width, height, params));
 	this.effectComposer.renderTarget2 = this.texture;
 	this.effectComposer.addPass(this.shader);
 }
@@ -75,7 +82,21 @@ GLSLFilter.prototype.applyFilter = function(ctx, x, y, width, height, targetCtx,
 	if(targetX == null) { targetX = x; }
 	if(targetY == null) { targetY = y; }
 	
+	if(!GLSLFilter.hasWebGL) {
+		if(targetCtx != ctx) {
+			targetCtx.drawImage(ctx.canvas, targetX, targetY);
+		}
+		
+		return;
+	}
+	
 	this.texture.image = ctx.canvas;
+	this.texture.needsUpdate = true;
+	
+	GLSLFilter.renderer.setSize(width, height);
+	
+	this.shader.uniforms.iInputWidth.value = width;
+	this.shader.uniforms.iInputHeight.value = height;
 			
 	this.effectComposer.renderTarget1.width = width;
 	this.effectComposer.renderTarget1.height = height;
@@ -85,7 +106,7 @@ GLSLFilter.prototype.applyFilter = function(ctx, x, y, width, height, targetCtx,
 	// not sure where it's been changed in the first place though!?
 	targetCtx.setTransform(1, 0, 0, 1, 0, 0);
 	targetCtx.clearRect(0, 0, width, height);
-	targetCtx.drawImage(this.renderer.domElement, 0, 0);
+	targetCtx.drawImage(GLSLFilter.renderer.domElement, targetX, targetY);
 }
 
 GLSLFilter.prototype.clone = function () {
@@ -95,3 +116,6 @@ GLSLFilter.prototype.clone = function () {
 GLSLFilter.prototype.toString = function () {
 	return "[GLSLFilter (name="+  this.name +")]";
 }
+
+GLSLFilter.renderer = new THREE.WebGLRenderer();
+GLSLFilter.hasWebGL = GLSLFilter.renderer ? true : false;
